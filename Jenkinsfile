@@ -23,7 +23,7 @@ pipeline {
                 }
             }
         }
-       /* stage('Push Docker Image') {
+       stage('Push Docker Image') {
             when {
                 branch 'example-solution'
             }
@@ -56,6 +56,6 @@ pipeline {
                     }
                 }
             }
-        } */
+        } 
     }
 }

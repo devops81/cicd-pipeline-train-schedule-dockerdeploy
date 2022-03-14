@@ -10,9 +10,9 @@ pipeline {
             }
         }
         stage('Build Docker Image') {
-            when {
+           /* when {
                 branch 'origin/example-solution'
-            }
+            }*/
             steps {
                 script {
                     echo "inside script"
@@ -24,9 +24,9 @@ pipeline {
             }
         }
        stage('Push Docker Image') {
-            when {
+           /* when {
                 branch 'origin/example-solution'
-            }
+            } */
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
@@ -37,9 +37,9 @@ pipeline {
             }
         }
         stage('DeployToProduction') {
-            when {
+           /* when {
                 branch 'origin/example-solution'
-            }
+            } */
             steps {
                 input 'Deploy to Production?'
                 milestone(1)

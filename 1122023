@@ -1,0 +1,51 @@
+pipeline {
+agent any
+stages {
+stage('build'){
+
+steps {
+echo 'Running build automation'
+sh './gradlew build --no-daimon'
+archiveArtifacts artifacts: 'dist/trainschedules.zip'
+}
+stage('Build the docker image') {
+when {
+branch 'master'
+}
+steps {
+script {
+docker.withRegistry(https://registry.hub.docker.com','docker_hub_login') {
+app.push("${env.Build_Number}")
+app.push("latest")
+}
+      }
+  }
+
+}
+stage('Deploytoproduction') {
+when {
+branch 'master'{
+
+}
+steps {
+input 'Deploy to production'
+milestone(1)
+withCredentials([usernamePassword(CredentialsID: 'webserver_login',usernameVariable:'username',passwordVariable:'USERPASS')]){
+script {
+sh "sshpass -p '$USERPASS' -v ssh -0 StrictHostKeyChecking=no $username@$prod_ip" \ "docker pull devops81/train-schedule:${env.BUILD_NUMBER}\""
+try {
+sh "sshpass -p '$USERPASS' -v ssh -0 StrictHostKeyChecking=no $username@prod_ip" \"docker stop train-schedule\""
+}
+catch (err) {
+echo: 'caught error: $err'
+}
+sh "sshpass -p $USERPASS" -v ssh -0 StrictHostKeyChecking=no $username@prod_ip\ "docker run -restart always --name train-schedule -p 8000:8000 -d devops81/train-schedule:${env.BUILD_NUMBER}\""
+
+}
+}
+}
+}
+}
+}
+}
+}

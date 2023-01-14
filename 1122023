@@ -69,5 +69,9 @@ pipeline {
     {
     echo "Job failed"
     }
+     aborted
+    {
+    echo "Job is aborted"
+    }
     }
 }

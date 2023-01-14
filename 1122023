@@ -65,5 +65,9 @@ pipeline {
     echo "Sending the notification"
     emailext mimeType: 'text/html', replyTo: 'devops81@gmail.com', subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - ${env.BUILD_STATUS}", to: 'devops81@gmail.com', body:'${SCRIPT, template="groovy-html"}'
     }
+    failed
+    {
+    echo "Job failed"
+    }
     }
 }

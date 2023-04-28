@@ -1,5 +1,11 @@
 pipeline {
     agent any
+    
+     environment{
+        
+        registry = "devops81/train-schedule"
+        registryCredential = 'docker_hub_login'        
+    }
     stages {
         stage('Build') {
             steps {
@@ -14,12 +20,9 @@ pipeline {
             }*/
             steps {
                 script {
-                    echo "inside script"
-                    app = docker.build("devops81/train-schedule")
-                    app.inside {
-                        sh 'echo $(curl localhost:8080)'
-                    }
-                }
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                        }
+            
             }
         }
        stage('Push Docker Image') {

@@ -15,7 +15,7 @@ pipeline {
             }*/
             steps {
                 script {
-                    docker image pull tomcat
+            
                     echo "inside script"
                     app = docker.build("devops81/train-schedule")
                     app.inside {

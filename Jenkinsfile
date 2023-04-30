@@ -5,7 +5,7 @@ pipeline {
         
         registry = "devops81/train-schedule"
         registryCredential = 'docker_hub_login'
-        prod_ip=3.226.241.29
+        prod_ip= '3.226.241.29'
     }
     stages {
         stage('Build') {

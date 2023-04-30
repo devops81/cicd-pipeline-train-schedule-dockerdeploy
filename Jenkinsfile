@@ -20,7 +20,7 @@ pipeline {
             }*/
             steps {
                 script {
-         app = docker.build registry + ":$BUILD_NUMBER"
+         app = docker build . --network=host
                         }
             
             }

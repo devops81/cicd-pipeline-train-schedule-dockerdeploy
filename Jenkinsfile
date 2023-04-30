@@ -22,6 +22,9 @@ pipeline {
             steps {
                 script {
          app = docker.build(registry,'--network=host .')
+         app.inside {
+                        sh 'echo $(curl localhost:8080)'
+                    }
                         }
             
             }

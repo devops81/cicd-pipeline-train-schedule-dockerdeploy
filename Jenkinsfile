@@ -20,7 +20,7 @@ pipeline {
             }*/
             steps {
                 script {
-         app = docker.build('registry','--build-arg network=host .')
+         app = docker.build('$registry','--network=host .')
                         }
             
             }

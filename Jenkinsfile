@@ -20,7 +20,7 @@ pipeline {
             }*/
             steps {
                 script {
-         app = docker.build("devops81/train-schedule")
+         app = docker.build registry + ":$BUILD_NUMBER" + "." + "--network=host"
                         }
             
             }

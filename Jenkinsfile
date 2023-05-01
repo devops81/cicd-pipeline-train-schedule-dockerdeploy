@@ -42,40 +42,11 @@ pipeline {
                 }
             }
         }
-       /* stage('DeployToProduction') {
-           /* when {
-                branch 'master'
-            }*/
-            steps {
-                input 'Does the staging environment look OK?'
-                milestone(2)
-                withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-                    sshPublisher(
-                        failOnError: true,
-                        continueOnError: false,
-                        publishers: [
-                            sshPublisherDesc(
-                                configName: 'production',
-                                sshCredentials: [
-                                    username: "$USERNAME",
-                                    encryptedPassphrase: "$USERPASS"
-                                ], 
-                                transfers: [
-                                    sshTransfer(
-                                        sourceFiles: 'dist/trainSchedule.zip',
-                                        removePrefix: 'dist/',
-                                        remoteDirectory: '/tmp',
-                                        
-                                    )
-                                ]
-                            )
-                        ]
-                    )
-                }
-            }
-        } */
+
         stage('DeployToProduction2') {
-                  
+                    when {
+                        branch 'master'
+                    }
                     steps {
                         input 'Deploy to Production2?'
                         milestone(1)

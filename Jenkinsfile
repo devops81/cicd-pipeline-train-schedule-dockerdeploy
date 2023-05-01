@@ -1,6 +1,12 @@
 pipeline {
-    agent {
-        label 'master' }
+    agent any
+    
+     environment{
+        
+        registry = "devops81/train-schedule"
+        registryCredential = 'docker_hub_login'
+        prod_ip= '3.226.241.29'
+    }
     stages {
         stage('Build') {
             steps {
@@ -15,13 +21,12 @@ pipeline {
             }*/
             steps {
                 script {
-            
-                    echo "inside script"
-                    app = docker.build("devops81/train-schedule")
-                    app.inside {
+         app = docker.build(registry,'--network=host .')
+         app.inside {
                         sh 'echo $(curl localhost:8080)'
                     }
-                }
+                        }
+            
             }
         }
        stage('Push Docker Image') {
@@ -39,24 +44,56 @@ pipeline {
         }
         stage('DeployToProduction') {
            /* when {
-                branch 'origin/example-solution'
-            } */
+                branch 'master'
+            }*/
             steps {
-                input 'Deploy to Production?'
+                input 'Does the staging environment look OK?'
                 milestone(1)
                 withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-                    script {
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker pull devops81/train-schedule:${env.BUILD_NUMBER}\""
-                        try {
-                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker stop train-schedule\""
-                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker rm train-schedule\""
-                        } catch (err) {
-                            echo: 'caught error: $err'
-                        }
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker run --restart always --name train-schedule -p 8080:8080 -d devops81/train-schedule:${env.BUILD_NUMBER}\""
-                    }
+                    sshPublisher(
+                        failOnError: true,
+                        continueOnError: false,
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: 'production',
+                                sshCredentials: [
+                                    username: "$USERNAME",
+                                    encryptedPassphrase: "$USERPASS"
+                                ], 
+                                transfers: [
+                                    sshTransfer(
+                                        sourceFiles: 'dist/trainSchedule.zip',
+                                        removePrefix: 'dist/',
+                                        remoteDirectory: '/tmp',
+                                        
+                                    )
+                                ]
+                            )
+                        ]
+                    )
                 }
             }
-        } 
-    }
+        }
+        stage('DeployToProduction2') {
+                    when {
+                        branch 'master'
+                    }
+                    steps {
+                        input 'Deploy to Production2?'
+                        milestone(1)
+                        withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+                            script {
+                                sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker pull willbla/train-schedule:${env.BUILD_NUMBER}\""
+                                try {
+                                    sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker stop train-schedule\""
+                                    sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker rm train-schedule\""
+                                } catch (err) {
+                                    echo: 'caught error: $err'
+                                }
+                                sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker run --restart always --name train-schedule -p 8080:8080 -d willbla/train-schedule:${env.BUILD_NUMBER}\""
+                            }
+                        }
+                    }
+                }
+}
 }

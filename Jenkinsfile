@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+    triggers { pollSCM '* * * * *' }
      environment{
         
         registry = "devops81/train-schedule"

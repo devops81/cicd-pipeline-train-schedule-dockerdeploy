@@ -2,7 +2,7 @@ pipeline {
     agent any
     triggers {
         pollSCM '* * * * *'
-        cron(12 9 * * *) }
+        cron('16 9 * * *') }
      environment{
         
         registry = "devops81/train-schedule"

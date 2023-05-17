@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'Linux-Node'}
     triggers {
         pollSCM '* * * * *'
         cron('49 3 * * *') }

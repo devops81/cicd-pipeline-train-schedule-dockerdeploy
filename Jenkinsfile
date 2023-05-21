@@ -4,7 +4,11 @@ pipeline {
         pollSCM '* * * * *'
         cron('49 3 * * *') }
      environment{
-        
+        def props = readProperties  file:'/var/lib/jenkins/jobs/abc/test.properties'
+        def Var1= props['Monday']
+        def Var2= props['Tuesday']
+        echo "Var1=${Var1}"
+        echo "Var2=${Var2}" 
         registry = "devops81/train-schedule"
         registryCredential = 'docker_hub_login'
         prod_ip= '172.31.22.115'

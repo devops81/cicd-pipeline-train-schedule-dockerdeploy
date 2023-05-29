@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'Built-In Node'}
+    agent { label 'Built-In'}
     triggers {
         pollSCM '* * * * *'
         cron('49 3 * * *') }

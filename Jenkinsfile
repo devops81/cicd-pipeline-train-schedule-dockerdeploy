@@ -11,11 +11,19 @@ pipeline {
         echo "Var2=${Var2}" 
         registry = "devops81/train-schedule"
         registryCredential = 'docker_hub_login'
-        prod_ip= '172.31.22.115'
-        stage_ip= 'staginiphere'
+
     
     }
     stages {
+        
+        stage('Read Properties') {
+      steps {
+        script {
+          load 'globalVars.groovy' // Load the script
+        }
+      }
+    }
+
         stage('Build') {
             steps {
                 echo 'Runnings build automation'

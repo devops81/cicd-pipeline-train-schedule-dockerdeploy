@@ -24,7 +24,7 @@ pipeline {
       steps {
         echo "Value of GLOBAL_VARIABLE_1: ${env.GLOBAL_VARIABLE_1}"
         echo "Value of GLOBAL_VARIABLE_2: ${env.GLOBAL_VARIABLE_2}"
-        echo "Value for prod_ip: ${env.Prod_IP}"
+        echo "Value of GLOBAL_VARIABLE_2: ${env.GLOBAL_VARIABLE_3}"
       }
     }
 

@@ -8,7 +8,7 @@ def loadGlobalVars() {
   // Define global variables
   env.GLOBAL_VARIABLE_1 = properties.getProperty('property1')
   env.GLOBAL_VARIABLE_2 = properties.getProperty('property2')
-  env.Prod_IP = properties.getProperty('prod_ip')
+  env.GLOBAL_VARIABLE_3 = properties.getProperty('prod_ip')
 }
 
 loadGlobalVars() // Load the global variables immediately

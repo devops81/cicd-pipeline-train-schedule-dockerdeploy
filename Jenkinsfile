@@ -19,14 +19,14 @@ pipeline {
         }
       }
     }
-   /*       
+        
    stage('Use Global Variables') {
       steps {
         echo "Value of GLOBAL_VARIABLE_1: ${env.GLOBAL_VARIABLE_1}"
         echo "Value of GLOBAL_VARIABLE_2: ${env.GLOBAL_VARIABLE_2}"
         echo "Value of GLOBAL_VARIABLE_2: ${env.GLOBAL_VARIABLE_3}"
       }
-    } */
+    } 
 
         stage('Build') {
             steps {

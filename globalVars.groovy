@@ -1,7 +1,7 @@
 // globalVars.groovy
 def loadGlobalVars() {
   def properties = new Properties()
-  def inputStream = new FileInputStream('/var/lib/jenkins/workspace/pipeline/jenkinsfile.pipeline.properties')
+  def inputStream = new FileInputStream('/var/lib/jenkins/workspace/train-schedule-app/jenkinsfile.pipeline.properties')
   properties.load(inputStream)
   inputStream.close()
 

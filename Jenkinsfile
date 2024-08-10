@@ -12,14 +12,14 @@ pipeline {
     }
     stages {
         
-  /*      stage('Read Properties') {
+      stage('Read Properties') {
       steps {
         script {
           load 'globalVars.groovy' // Load the script
         }
       }
     }
-        
+   /*       
    stage('Use Global Variables') {
       steps {
         echo "Value of GLOBAL_VARIABLE_1: ${env.GLOBAL_VARIABLE_1}"

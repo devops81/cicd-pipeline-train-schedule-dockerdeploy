@@ -12,7 +12,7 @@ pipeline {
     }
     stages {
         
-        stage('Read Properties') {
+  /*      stage('Read Properties') {
       steps {
         script {
           load 'globalVars.groovy' // Load the script
@@ -26,7 +26,7 @@ pipeline {
         echo "Value of GLOBAL_VARIABLE_2: ${env.GLOBAL_VARIABLE_2}"
         echo "Value of GLOBAL_VARIABLE_2: ${env.GLOBAL_VARIABLE_3}"
       }
-    }
+    } */
 
         stage('Build') {
             steps {

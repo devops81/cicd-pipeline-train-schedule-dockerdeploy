@@ -43,7 +43,7 @@ pipeline {
                 script {
          app = docker.build(registry,'--network=host .')
          app.inside {
-                        sh 'echo $(curl localhost:8080)'
+                       /* sh 'echo $(curl localhost:8080)' */
                     }
                         }
             
